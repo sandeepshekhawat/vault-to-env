@@ -35,7 +35,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     @objc func openHelp() {
-        if let url = URL(string: "https://github.com") {
+        if let url = URL(string: "https://github.com/sandeepshekhawat/vault-to-env") {
             NSWorkspace.shared.open(url)
         }
     }

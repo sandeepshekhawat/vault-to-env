@@ -1,6 +1,25 @@
 # Vault to Env
 
+[![macOS](https://img.shields.io/badge/macOS-13%2B-blue)](https://www.apple.com/macos)
+[![Swift](https://img.shields.io/badge/Swift-5.0-orange)](https://swift.org)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+
 A macOS menu bar app that converts pasted vault/secret content (JSON, YAML, or key=value) into env-format lines. Paste from anywhere, then copy the result or save as a `.env` file.
+
+**Download:** [Releases](https://github.com/sandeepshekhawat/vault-to-env/releases) — get the latest `.app` (zip) without building.
+
+## Contents
+
+- [Features](#features)
+- [Requirements](#requirements)
+- [Build and run](#build-and-run)
+- [Usage](#usage)
+- [Distribution](#distribution)
+- [Production notes](#production-notes)
+- [Contributing](#contributing)
+- [License](#license)
+
+## Features
 
 - **Menu bar only** by default (no dock icon). Optionally **Show in Dock** for easier access when the menu bar is crowded.
 - **Input formats:** Auto (tries JSON → YAML → key=value), or force JSON, YAML, or Key=Value.
@@ -22,12 +41,12 @@ cd vault-to-env-app
 git init   # only if starting fresh (repo may already exist)
 git add .
 git commit -m "Initial commit"
-git remote add origin https://github.com/YOUR_USERNAME/vault-to-env.git
+git remote add origin https://github.com/sandeepshekhawat/vault-to-env.git
 git branch -M main
 git push -u origin main
 ```
 
-Use your own repo URL. The `.gitignore` excludes Xcode build artifacts, `DerivedData`, and `xcuserdata` so they are not committed.
+The `.gitignore` excludes Xcode build artifacts, `DerivedData`, and `xcuserdata` so they are not committed.
 
 ## Requirements
 
@@ -93,3 +112,11 @@ For distribution outside your Mac (e.g. download from a link), code signing and 
 - **Duplicate keys:** With “Last component” style, if multiple paths map to the same key (e.g. `a.x` and `b.x` → `X`), the second and later get `_2`, `_3`, etc. (e.g. `X_2`).
 - **Secrets:** Input and output are cleared when the window closes. No secrets are logged or sent off-device.
 - **Console messages:** When running as a menu bar (agent) app, messages like "Unable to obtain a task name port right", "ViewBridge … Terminated", or "binary.metallib … invalid format" are usually system-level and benign. If the app icon does not render, try a clean build and ensure you’re running for your Mac’s architecture (e.g. arm64 without Rosetta).
+
+## Contributing
+
+Contributions are welcome. Open an [issue](https://github.com/sandeepshekhawat/vault-to-env/issues) to discuss larger changes, or submit a pull request for small fixes. See [CONTRIBUTING.md](CONTRIBUTING.md).
+
+## License
+
+[MIT](LICENSE).

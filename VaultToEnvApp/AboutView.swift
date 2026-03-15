@@ -7,7 +7,7 @@ struct AboutView: View {
         (Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String) ?? "1.0.0"
     }
 
-    private let helpURL = URL(string: "https://github.com")!
+    private let helpURL = URL(string: "https://github.com/sandeepshekhawat/vault-to-env")!
 
     var body: some View {
         VStack(spacing: 16) {
