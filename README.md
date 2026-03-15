@@ -13,6 +13,22 @@ A macOS menu bar app that converts pasted vault/secret content (JSON, YAML, or k
 - **Help menu** (when app is active): Vault to Env Help (opens documentation URL), Keyboard Shortcuts.
 - **App icon:** Add your own PNGs to `VaultToEnvApp/Assets.xcassets/AppIcon.appiconset` (see Contents.json for sizes). Without custom icons, the app uses the system default.
 
+## Version control (Git)
+
+The project is set up for Git. To create a new repo or push to a remote:
+
+```bash
+cd vault-to-env-app
+git init   # only if starting fresh (repo may already exist)
+git add .
+git commit -m "Initial commit"
+git remote add origin https://github.com/YOUR_USERNAME/vault-to-env.git
+git branch -M main
+git push -u origin main
+```
+
+Use your own repo URL. The `.gitignore` excludes Xcode build artifacts, `DerivedData`, and `xcuserdata` so they are not committed.
+
 ## Requirements
 
 - macOS 13.0 or later
@@ -44,13 +60,20 @@ You should see a **key icon in the status bar** (top-right, near Wi‑Fi/battery
 
 Nested JSON/YAML is flattened (e.g. `data.api_key` → `DATA_API_KEY` with Full path, or `API_KEY` with Last component). Keys are normalized to uppercase with underscores; values that need it are quoted so `source .env` and dotenv loaders work correctly.
 
-## Sharing the app with teammates
+## Distribution
 
-Build an `.app` bundle and share it (e.g. zip or DMG on a shared drive or internal link):
+### Sharing the app (same Mac or local team)
 
-1. In Xcode: **Product → Archive** (with the app scheme and **Release**).
-2. In the Organizer: **Distribute App** → **Copy App** (or **Custom** for a zip/DMG).
-3. Share the resulting `.app` or archive. Teammates copy it to Applications (or anywhere) and double‑click to run.
+Build an `.app` bundle and share it (zip, DMG, or copy the `.app`):
+
+1. In Xcode: **Product → Archive** (scheme: VaultToEnvApp, **Release**).
+2. In the Organizer: **Distribute App** → **Copy App** (or **Custom** to create a zip/DMG).
+3. Share the `.app` or archive. Recipients copy it to **Applications** (or any folder) and double-click to run.
+
+### Distributing via Git
+
+- **Source only:** Push the repo to GitHub/GitLab/etc. Others clone and build in Xcode (see Build and run).
+- **Releases:** On GitHub, use **Releases** to attach a built `.app` (or zip/DMG) per version so users can download without building.
 
 For distribution outside your Mac (e.g. download from a link), code signing and notarization are recommended so macOS doesn’t block the app.
 

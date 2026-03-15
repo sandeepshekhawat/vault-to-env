@@ -141,7 +141,6 @@ struct ContentView: View {
                     .background(Color(nsColor: .textBackgroundColor))
                     .cornerRadius(6)
                     .frame(minHeight: 100, maxHeight: 160)
-                    .disabled(true)
                     .accessibilityLabel("Env output")
                     .accessibilityValue(outputKeyCount > 0 ? "\(outputKeyCount) keys" : "Empty")
 

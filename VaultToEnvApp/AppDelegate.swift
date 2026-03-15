@@ -10,43 +10,23 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationDidFinishLaunching(_ notification: Notification) {
         applyShowInDockPreference()
         registerHotkey()
-        setupHelpMenu()
+        // Hide the minimal WindowGroup window (used only so SwiftUI adds the Edit menu).
+        DispatchQueue.main.async { [weak self] in
+            self?.hideMinimalWindowGroupWindow()
+        }
     }
 
-    private func setupHelpMenu() {
-        let mainMenu = NSMenu()
-        let appMenu = NSMenu()
-        let appItem = NSMenuItem(title: "Vault to Env", action: nil, keyEquivalent: "")
-        appItem.submenu = appMenu
-        appMenu.addItem(NSMenuItem(title: "About Vault to Env", action: #selector(showAbout), keyEquivalent: ""))
-        appMenu.addItem(NSMenuItem.separator())
-        appMenu.addItem(NSMenuItem(title: "Quit Vault to Env", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q"))
-        mainMenu.addItem(appItem)
-
-        // Edit menu so Paste (⌘V), Copy (⌘C), etc. work in the input/output fields.
-        let editMenu = NSMenu(title: "Edit")
-        let editItem = NSMenuItem(title: "Edit", action: nil, keyEquivalent: "")
-        editItem.submenu = editMenu
-        editMenu.addItem(NSMenuItem(title: "Undo", action: NSSelectorFromString("undo:"), keyEquivalent: "z"))
-        editMenu.addItem(NSMenuItem(title: "Redo", action: NSSelectorFromString("redo:"), keyEquivalent: "z"))
-        editMenu.addItem(NSMenuItem.separator())
-        editMenu.addItem(NSMenuItem(title: "Cut", action: NSSelectorFromString("cut:"), keyEquivalent: "x"))
-        editMenu.addItem(NSMenuItem(title: "Copy", action: NSSelectorFromString("copy:"), keyEquivalent: "c"))
-        editMenu.addItem(NSMenuItem(title: "Paste", action: NSSelectorFromString("paste:"), keyEquivalent: "v"))
-        editMenu.addItem(NSMenuItem(title: "Select All", action: NSSelectorFromString("selectAll:"), keyEquivalent: "a"))
-        mainMenu.addItem(editItem)
-
-        let helpMenu = NSMenu()
-        let helpItem = NSMenuItem(title: "Help", action: nil, keyEquivalent: "")
-        helpItem.submenu = helpMenu
-        helpMenu.addItem(NSMenuItem(title: "Vault to Env Help", action: #selector(openHelp), keyEquivalent: ""))
-        helpMenu.addItem(NSMenuItem(title: "Keyboard Shortcuts", action: #selector(showKeyboardShortcuts), keyEquivalent: ""))
-        mainMenu.addItem(helpItem)
-
-        NSApp.mainMenu = mainMenu
+    private func hideMinimalWindowGroupWindow() {
+        for window in NSApp.windows where window.canBecomeKey {
+            // The minimal WindowGroup uses defaultSize(width: 1, height: 1).
+            if window.frame.width <= 20, window.frame.height <= 20 {
+                window.close()
+                break
+            }
+        }
     }
 
-    @objc private func showAbout() {
+    @objc func showAbout() {
         NSApp.activate(ignoringOtherApps: true)
         NSApp.orderFrontStandardAboutPanel(options: [
             NSApplication.AboutPanelOptionKey.credits: NSAttributedString(string: "Convert vault or secret content (JSON, YAML, key=value) into env-format lines."),
@@ -54,13 +34,13 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         ])
     }
 
-    @objc private func openHelp() {
+    @objc func openHelp() {
         if let url = URL(string: "https://github.com") {
             NSWorkspace.shared.open(url)
         }
     }
 
-    @objc private func showKeyboardShortcuts() {
+    @objc func showKeyboardShortcuts() {
         let msg = """
         Convert: ⌘↩
         Copy and close: (button in window)
@@ -92,8 +72,6 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     func applicationDidBecomeActive(_ notification: Notification) {
-        // Re-apply menu so Edit (Paste, Copy, etc.) is present after SwiftUI may have replaced it.
-        setupHelpMenu()
         NSApp.activate(ignoringOtherApps: true)
         if let window = NSApp.windows.first(where: { $0.canBecomeKey }) {
             window.makeKeyAndOrderFront(nil)
