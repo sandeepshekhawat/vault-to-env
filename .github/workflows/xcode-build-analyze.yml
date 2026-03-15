@@ -1,0 +1,39 @@
+name: Xcode - Build and Analyze
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  build:
+    name: Build and analyse default scheme using xcodebuild command
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install xcpretty
+        run: gem install xcpretty
+
+      - name: Set Default Scheme
+        run: |
+          scheme_list=$(xcodebuild -list -json | tr -d "\n")
+          default=$(echo $scheme_list | ruby -e "require 'json'; puts JSON.parse(STDIN.gets)['project']['targets'][0]")
+          echo "$default" > default_scheme.txt
+          echo "Using scheme: $default"
+
+      - name: Build
+        run: |
+          scheme=$(cat default_scheme.txt)
+          if [ -n "$(ls -A | grep -i '\.xcworkspace$')" ]; then
+            filetype_parameter="workspace"
+            file_to_build=$(ls -A | grep -i '\.xcworkspace$' | head -1)
+          else
+            filetype_parameter="project"
+            file_to_build=$(ls -A | grep -i '\.xcodeproj$' | head -1)
+          fi
+          file_to_build=$(echo "$file_to_build" | awk '{$1=$1;print}')
+          xcodebuild clean build analyze -scheme "$scheme" -"$filetype_parameter" "$file_to_build" | xcpretty && exit ${PIPESTATUS[0]}

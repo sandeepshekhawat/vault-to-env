@@ -1,0 +1,22 @@
+name: Build
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Resolve Swift packages
+        run: xcodebuild -resolvePackageDependencies -scheme VaultToEnvApp -project VaultToEnvApp.xcodeproj
+
+      - name: Build
+        run: xcodebuild -scheme VaultToEnvApp -configuration Debug -project VaultToEnvApp.xcodeproj -destination 'platform=macOS' build
+
+      - name: Run tests
+        run: xcodebuild -scheme VaultToEnvApp -configuration Debug -project VaultToEnvApp.xcodeproj -destination 'platform=macOS' test

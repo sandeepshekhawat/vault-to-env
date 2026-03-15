@@ -8,6 +8,8 @@ A macOS menu bar app that converts pasted vault/secret content (JSON, YAML, or k
 
 **Download:** [Releases](https://github.com/sandeepshekhawat/vault-to-env/releases) — get the latest `.app` (zip) without building.
 
+**If the app won’t open** (“VaultToEnvApp can’t be opened”): macOS is blocking it because it was downloaded from the internet and isn’t notarized. **Right‑click the app → Open → Open** (or go to **System Settings → Privacy & Security** and click **Open Anyway** next to the blocked message). You only need to do this once per download.
+
 ## Contents
 
 - [Features](#features)
