@@ -76,4 +76,13 @@ final class EnvParserTests: XCTestCase {
         guard case .success(let out) = EnvParser.parse(input) else { XCTFail(); return }
         XCTAssertTrue(out.contains("\""))
     }
+
+    func testLineSuffixApplied() {
+        let input = #"{"FOO":"bar","BAZ":"qux"}"#
+        var opts = EnvParser.Options.default
+        opts.lineSuffix = ";"
+        guard case .success(let out) = EnvParser.parse(input, options: opts) else { XCTFail(); return }
+        let lines = out.components(separatedBy: .newlines)
+        XCTAssertTrue(lines.allSatisfy { $0.hasSuffix(";") })
+    }
 }

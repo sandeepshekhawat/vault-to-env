@@ -18,6 +18,8 @@ enum EnvParser {
         var keyStyle: KeyStyle = .fullPath
         var keyPrefix: String = ""
         var exportFormat: ExportFormat = .plain
+        /// Optional suffix appended to each generated env line, e.g. ";".
+        var lineSuffix: String = ""
         static let `default` = Options()
     }
 
@@ -172,7 +174,13 @@ enum EnvParser {
     }
 
     private static func formatOutputLines(_ pairs: [(String, String)], options: Options) -> String {
-        let lines = pairs.map { escapeEnvLine(key: $0.0, value: $0.1) }
+        let baseLines = pairs.map { escapeEnvLine(key: $0.0, value: $0.1) }
+        let lines: [String]
+        if options.lineSuffix.isEmpty {
+            lines = baseLines
+        } else {
+            lines = baseLines.map { $0 + options.lineSuffix }
+        }
         if options.exportFormat == .export {
             return lines.map { "export \($0)" }.joined(separator: "\n")
         }

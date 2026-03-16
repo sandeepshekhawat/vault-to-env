@@ -25,7 +25,7 @@ A macOS menu bar app that converts pasted vault/secret content (JSON, YAML, or k
 
 - **Menu bar only** by default (no dock icon). Optionally **Show in Dock** for easier access when the menu bar is crowded.
 - **Input formats:** Auto (tries JSON → YAML → key=value), or force JSON, YAML, or Key=Value.
-- **Output:** `KEY=value` or `export KEY=value` (toggle). Options: key style (full path vs last component), optional key prefix. Duplicate keys (e.g. with “Last component”) get suffixes `_2`, `_3`, etc.
+- **Output:** `KEY=value;` or `export KEY=value;` (toggle). Each generated env line ends with a trailing `;` by default so tools like IntelliJ do not treat multiple variables as one block. Options: key style (full path vs last component), optional key prefix. Duplicate keys (e.g. with “Last component”) get suffixes `_2`, `_3`, etc.
 - **Paste on open:** Clipboard content is pasted into the input area when you open the window (if input is empty).
 - **Clear** input, output, or all; **Copy**, **Copy and close**, or **Save…** with brief “Copied” / “Saved” feedback; output shows key count. **Save** remembers the last directory. Large input (>500 KB) shows a warning.
 - **Mask output:** Toggle to show bullets instead of values in the window (Copy/Save still use the real values).
@@ -75,7 +75,7 @@ You should see a **key icon in the status bar** (top-right, near Wi‑Fi/battery
 
 1. Copy secret data from your vault UI, config file, or anywhere (JSON, YAML, or `KEY=value` / `KEY: value` lines).
 2. Click the menu bar icon (or use Spotlight / dock if enabled). The clipboard is pasted into the input area if it’s empty.
-3. Set **Format** to Auto, JSON, YAML, or Key=Value. Optionally set **Key style**, **Output** (KEY=value vs export KEY=value), and **Key prefix** (e.g. `MYAPP_`).
+3. Set **Format** to Auto, JSON, YAML, or Key=Value. Optionally set **Key style**, **Output** (`KEY=value;` vs `export KEY=value;`), and **Key prefix** (e.g. `MYAPP_`).
 4. Click **Convert** (or **Cmd+Return**).
 5. Use **Copy**, **Copy and close**, or **Save…** for the env output. Save uses the last chosen directory next time. Use **Clear input** / **Clear output** / **Clear all** as needed. Enable **Mask output in window** to hide values on screen.
 

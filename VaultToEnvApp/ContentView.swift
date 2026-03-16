@@ -297,7 +297,9 @@ struct ContentView: View {
     }
 
     private var parserOptions: EnvParser.Options {
-        EnvParser.Options(keyStyle: keyStyle, keyPrefix: sanitizedKeyPrefix, exportFormat: exportFormat)
+        var options = EnvParser.Options(keyStyle: keyStyle, keyPrefix: sanitizedKeyPrefix, exportFormat: exportFormat)
+        options.lineSuffix = ";"
+        return options
     }
 
     private func convert() {
